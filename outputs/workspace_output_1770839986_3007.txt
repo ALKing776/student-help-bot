@@ -1,0 +1,18 @@
+total 108
+drwxr-xr-x  4 user user  4096 Feb 11 19:59 .
+drwxr-xr-x 20 root root  4096 Feb  6 01:46 ..
+drwxr-xr-x  4 user user  4096 Feb  4 22:06 .agent_hooks
+-rw-r--r--  1 root root   490 Feb 11 19:35 .env.example
+-rw-r--r--  1 root root   363 Feb 11 19:39 .gitignore
+-rw-r--r--  1 root root  4692 Feb 11 19:59 PROJECT_STRUCTURE.md
+-rw-r--r--  1 root root  7995 Feb 11 19:39 README.md
+-rw-r--r--  1 root root  2614 Feb 11 19:40 config.py
+-rw-r--r--  1 root root  9154 Feb 11 19:44 message_analyzer.py
+drwxr-xr-x  2 root root  4096 Feb 11 19:59 outputs
+-rw-r--r--  1 root root  4721 Feb 11 19:58 project_summary.py
+-rw-r--r--  1 root root   321 Feb 11 19:36 requirements.txt
+-rw-r--r--  1 root root   966 Feb 11 19:42 start.bat
+-rwxr-xr-x  1 root root   935 Feb 11 19:42 start.sh
+-rw-r--r--  1 root root 10202 Feb 11 19:35 student_help_bot.py
+-rw-r--r--  1 root root  1422 Feb 11 19:41 todo.md
+-rw-r--r--  1 root root 13420 Feb 11 19:56 دليل_الاستخدام.md

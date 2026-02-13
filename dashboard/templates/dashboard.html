@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Help Bot - Admin Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/dashboard.css') }}" rel="stylesheet">
+</head>
+<body>
+    <div class="wrapper">
+        <!-- Sidebar -->
+        <nav id="sidebar" class="sidebar">
+            <div class="sidebar-header">
+                <h3><i class="fas fa-robot"></i> Bot Admin</h3>
+            </div>
+            <ul class="list-unstyled components">
+                <li class="active">
+                    <a href="#dashboard" data-tab="dashboard"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+                </li>
+                <li>
+                    <a href="#accounts" data-tab="accounts"><i class="fas fa-users"></i> Accounts</a>
+                </li>
+                <li>
+                    <a href="#users" data-tab="users"><i class="fas fa-user-friends"></i> Users</a>
+                </li>
+                <li>
+                    <a href="#services" data-tab="services"><i class="fas fa-chart-line"></i> Services</a>
+                </li>
+                <li>
+                    <a href="#reports" data-tab="reports"><i class="fas fa-file-alt"></i> Reports</a>
+                </li>
+                <li>
+                    <a href="#config" data-tab="config"><i class="fas fa-cog"></i> Configuration</a>
+                </li>
+            </ul>
+            <div class="sidebar-footer">
+                <a href="/logout" class="btn btn-outline-light w-100"><i class="fas fa-sign-out-alt"></i> Logout</a>
+            </div>
+        </nav>
+
+        <!-- Page Content -->
+        <div id="content" class="content">
+            <!-- Navigation Bar -->
+            <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                <div class="container-fluid">
+                    <button type="button" id="sidebarCollapse" class="btn btn-info">
+                        <i class="fas fa-align-left"></i>
+                    </button>
+                    <span class="navbar-text ms-3">
+                        <i class="fas fa-circle text-success"></i> Online
+                    </span>
+                    <div class="ms-auto">
+                        <span id="current-time" class="badge bg-primary"></span>
+                    </div>
+                </div>
+            </nav>
+
+            <!-- Main Content Area -->
+            <div class="container-fluid mt-4">
+                <!-- Dashboard Tab -->
+                <div id="tab-dashboard" class="tab-content active">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="card bg-primary text-white">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between">
+                                        <div>
+                                            <h5>Active Accounts</h5>
+                                            <h2 id="active-accounts">0</h2>
+                                        </div>
+                                        <i class="fas fa-users fa-2x"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="card bg-success text-white">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between">
+                                        <div>
+                                            <h5>Total Messages</h5>
+                                            <h2 id="total-messages">0</h2>
+                                        </div>
+                                        <i class="fas fa-comments fa-2x"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="card bg-warning text-white">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between">
+                                        <div>
+                                            <h5>Forwarded</h5>
+                                            <h2 id="forwarded-messages">0</h2>
+                                        </div>
+                                        <i class="fas fa-share fa-2x"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="card bg-info text-white">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between">
+                                        <div>
+                                            <h5>Messages/Min</h5>
+                                            <h2 id="mpm">0</h2>
+                                        </div>
+                                        <i class="fas fa-tachometer-alt fa-2x"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row mt-4">
+                        <div class="col-md-8">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5><i class="fas fa-chart-bar"></i> Service Distribution</h5>
+                                </div>
+                                <div class="card-body">
+                                    <canvas id="serviceChart"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5><i class="fas fa-medal"></i> Top Services</h5>
+                                </div>
+                                <div class="card-body">
+                                    <div id="top-services-list">
+                                        <!-- Will be populated by JavaScript -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row mt-4">
+                        <div class="col-md-6">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5><i class="fas fa-heartbeat"></i> Account Health</h5>
+                                </div>
+                                <div class="card-body">
+                                    <div id="account-health">
+                                        <!-- Will be populated by JavaScript -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5><i class="fas fa-history"></i> Recent Activity</h5>
+                                </div>
+                                <div class="card-body">
+                                    <div id="recent-activity">
+                                        <!-- Will be populated by JavaScript -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Accounts Tab -->
+                <div id="tab-accounts" class="tab-content">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-header d-flex justify-content-between align-items-center">
+                                    <h5><i class="fas fa-user-cog"></i> Account Management</h5>
+                                    <button class="btn btn-primary" onclick="refreshAccounts()">
+                                        <i class="fas fa-sync"></i> Refresh
+                                    </button>
+                                </div>
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <table class="table table-striped" id="accounts-table">
+                                            <thead>
+                                                <tr>
+                                                    <th>ID</th>
+                                                    <th>Username</th>
+                                                    <th>Status</th>
+                                                    <th>Messages</th>
+                                                    <th>Errors</th>
+                                                    <th>Load</th>
+                                                    <th>Last Used</th>
+                                                    <th>Actions</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <!-- Will be populated by JavaScript -->
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Users Tab -->
+                <div id="tab-users" class="tab-content">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5><i class="fas fa-users"></i> User Management</h5>
+                                </div>
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <table class="table table-striped" id="users-table">
+                                            <thead>
+                                                <tr>
+                                                    <th>User ID</th>
+                                                    <th>Username</th>
+                                                    <th>Messages</th>
+                                                    <th>Help Requests</th>
+                                                    <th>Last Seen</th>
+                                                    <th>Actions</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <!-- Will be populated by JavaScript -->
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Services Tab -->
+                <div id="tab-services" class="tab-content">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5><i class="fas fa-chart-pie"></i> Service Analytics</h5>
+                                </div>
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <table class="table table-striped" id="services-table">
+                                            <thead>
+                                                <tr>
+                                                    <th>Service</th>
+                                                    <th>Total Requests</th>
+                                                    <th>Forwarded</th>
+                                                    <th>Avg Confidence</th>
+                                                    <th>Peak Hours</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <!-- Will be populated by JavaScript -->
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Reports Tab -->
+                <div id="tab-reports" class="tab-content">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5><i class="fas fa-download"></i> Generate Report</h5>
+                                </div>
+                                <div class="card-body">
+                                    <div class="mb-3">
+                                        <label class="form-label">Report Type</label>
+                                        <select class="form-select" id="report-type">
+                                            <option value="daily_summary">Daily Summary</option>
+                                            <option value="service_performance">Service Performance</option>
+                                            <option value="user_engagement">User Engagement</option>
+                                        </select>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Period (Days)</label>
+                                        <input type="number" class="form-control" id="report-days" value="7" min="1" max="365">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Format</label>
+                                        <select class="form-select" id="report-format">
+                                            <option value="json">JSON</option>
+                                            <option value="csv">CSV</option>
+                                        </select>
+                                    </div>
+                                    <button class="btn btn-success w-100" onclick="generateReport()">
+                                        <i class="fas fa-file-export"></i> Generate Report
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-8">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5><i class="fas fa-file-alt"></i> Generated Reports</h5>
+                                </div>
+                                <div class="card-body">
+                                    <div id="reports-output">
+                                        <p class="text-muted">Generated reports will appear here...</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Configuration Tab -->
+                <div id="tab-config" class="tab-content">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5><i class="fas fa-sliders-h"></i> Current Settings</h5>
+                                </div>
+                                <div class="card-body">
+                                    <div id="current-config">
+                                        <!-- Will be populated by JavaScript -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5><i class="fas fa-edit"></i> Update Setting</h5>
+                                </div>
+                                <div class="card-body">
+                                    <div class="mb-3">
+                                        <label class="form-label">Setting Key</label>
+                                        <input type="text" class="form-control" id="config-key" placeholder="Enter setting key">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">New Value</label>
+                                        <input type="text" class="form-control" id="config-value" placeholder="Enter new value">
+                                    </div>
+                                    <button class="btn btn-primary" onclick="updateConfig()">
+                                        <i class="fas fa-save"></i> Update
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
+    <script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+</body>
+</html>
