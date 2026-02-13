@@ -11,7 +11,6 @@ import time
 from datetime import datetime
 from typing import Dict, Any
 import logging
-import os  # تم إضافته لقراءة البورت من البيئة
 from config import config
 from database import db
 from account_manager import account_manager
@@ -284,11 +283,11 @@ def start_dashboard():
         update_thread = threading.Thread(target=background_updates, daemon=True)
         update_thread.start()
         
-        # Start Flask-SocketIO server مع تعديل البورت للاستضافة
+        # Start Flask-SocketIO server
         socketio.run(
             app, 
-            host="0.0.0.0",
-            port=int(os.environ.get("PORT", 5000)),
+            host=config.DASHBOARD_HOST,
+            port=config.DASHBOARD_PORT,
             debug=False,
             allow_unsafe_werkzeug=True
         )
